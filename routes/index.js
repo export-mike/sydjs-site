@@ -7,6 +7,13 @@ var middleware = require('./middleware');
 var graphqlHTTP = require('express-graphql');
 var graphQLSchema = require('../graphql/basicSchema').default;
 var relaySchema = require('../graphql/relaySchema').default;
+const forgottenPasswordPlugin = require('keystone-forgotten-password');
+
+const forgottenPassword = forgottenPasswordPlugin({
+    // define what happens on the given email handlers.
+    // onForgotEmail: (locals) => sendForgotEmail(locals),
+    // onChangePasswordEmail: (locals) => sendChangePasswordEmail(locals),
+});
 
 var importRoutes = keystone.importer(__dirname);
 
@@ -99,9 +106,9 @@ exports = module.exports = function (app) {
 	app.all('/join', routes.views.session.join);
 	app.all('/signin', routes.views.session.signin);
 	app.get('/signout', routes.views.session.signout);
-	app.all('/forgot-password', routes.views.session['forgot-password']);
-	app.all('/reset-password/:key', routes.views.session['reset-password']);
-
+	// app.all('/forgot-password', routes.views.session['forgot-password']);
+	// app.all('/reset-password/:key', routes.views.session['reset-password']);
+	app.use(forgottenPassword);
 	// Authentication
 	app.all('/auth/confirm', routes.auth.confirm);
 	app.all('/auth/app', routes.auth.app);

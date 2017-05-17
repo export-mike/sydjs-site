@@ -2,7 +2,7 @@ var async = require('async');
 var crypto = require('crypto');
 var keystone = require('keystone');
 var Types = keystone.Field.Types;
-
+const { enhanceUser } = require('keystone-forgotten-password');
 /**
  * Users Model
  * ===========
@@ -107,6 +107,7 @@ User.add({
 	lastRSVP: { type: Date, noedit: true }
 });
 
+enhanceUser(User);
 
 /**
 	Pre-save
